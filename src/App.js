@@ -1,21 +1,47 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import Header from './Header';
+import TodosContainer from './TodosContainer';
+import AddTodoContainer from './AddTodoContainer';
 
 class App extends Component {
+
+  state = {
+    todos: [
+      {id: 0, title:'New Todo', isDone:false},
+      {id: 1, title:'Todo Done', isDone:true},
+      {id: 2, title:'Old Todo', isDone:false}
+     ]
+  }
+
+  deleteTodo = (index) => {
+    this.setState({
+      todos: this.state.todos.filter((todo, i) => i !== index)
+    })
+  }
+
+  addNewTodo = (content) => {
+    this.setState({
+      todos: this.state.todos.concat({
+        id: this.state.todos.length + 1,
+        title: content,
+        isDone: false
+      })
+    })
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="container">
+        <Header />
+        <div className="sub-container">
+          <TodosContainer myTodos={this.state.todos} onDetele={this.deleteTodo} />
+          <AddTodoContainer onAddTodo={this.addNewTodo}/>
+        </div>
       </div>
-    );
+    )
   }
+
 }
 
 export default App;
